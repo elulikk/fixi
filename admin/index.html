@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fixi Admin</title>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2F5BFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232F5BFF'/%3E%3Cpath d='M10 23V9h11v3.4h-6.8v2.5h5.6v3.3h-5.6V23z' fill='%23C6F432'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<script>
+  // Aplica el tema antes de pintar para evitar parpadeo.
+  try { var t = localStorage.getItem('fixi_theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<div id="app"></div>
+<div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
+<script type="module" src="js/main.js"></script>
+<noscript><p style="padding:24px;font-family:system-ui">El panel de Fixi necesita JavaScript para funcionar.</p></noscript>
+</body>
+</html>
