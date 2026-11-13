@@ -30,10 +30,10 @@ export default async function dashboard(root, { signal, refresh }) {
   }
   stats = stats || {};
   const by = stats.jobsByStatus || {};
-  const daily = (Array.isArray(stats.daily) ? stats.daily : []).map((d) => ({ date: d.date, gmv: Number(d.gmv) || 0, commission: Number(d.commission) || 0, jobs: Number(d.jobs) || 0 }));
+  const daily = (Array.isArray(stats.daily) ? stats.daily : Array.isArray(stats.series) ? stats.series : []).map((d) => ({ date: d.date, gmv: Number(d.gmv) || 0, commission: Number(d.commission) || 0, jobs: Number(d.jobs) || 0 }));
   const totalJobs = Object.values(by).reduce((a, n) => a + (Number(n) || 0), 0);
   const gmv = stats.gmv ?? (daily.length ? sum(daily, 'gmv') : undefined);
-  const commission = stats.commission ?? (daily.length ? sum(daily, 'commission') : undefined);
+  const commission = stats.commission ?? stats.commissionEarned ?? (daily.length ? sum(daily, 'commission') : undefined);
   const active = ['paid', 'on_the_way', 'in_progress', 'done'].reduce((a, s) => a + (Number(by[s]) || 0), 0);
 
   const kpi = (ic, label, value, cls = '', sub = '') => `<div class="card kpi ${cls}"><div class="ico">${icon(ic)}</div><div class="v">${value}</div><div class="l">${esc(label)}${sub ? ` · ${sub}` : ''}</div></div>`;

@@ -1,3 +1,4 @@
+import os from 'node:os';
 import { randomUUID } from 'node:crypto';
 import { z, ZodType } from 'zod';
 
@@ -44,4 +45,15 @@ export function levelFor(points: number): 'bronce' | 'plata' | 'oro' | 'platino'
   if (points >= 600) return 'oro';
   if (points >= 200) return 'plata';
   return 'bronce';
+}
+
+/** URLs de este servidor en la red local, para cargar en la app del celular. */
+export function lanUrls(port: number): string[] {
+  const out: string[] = [];
+  for (const list of Object.values(os.networkInterfaces())) {
+    for (const ni of list ?? []) {
+      if (ni.family === 'IPv4' && !ni.internal) out.push(`http://${ni.address}:${port}`);
+    }
+  }
+  return out;
 }

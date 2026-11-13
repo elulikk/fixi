@@ -17,7 +17,7 @@ import marketplaceRoutes from './routes/marketplace.js';
 import paymentRoutes, { paymentPages } from './routes/payments.js';
 import { seedDatabase } from './seed.js';
 import type { Ctx } from './services.js';
-import { AppError } from './util.js';
+import { AppError, lanUrls } from './util.js';
 import { Hub } from './ws.js';
 
 export interface BuildOptions {
@@ -103,7 +103,7 @@ export async function buildApp(opts: BuildOptions = {}): Promise<{ app: FastifyI
   );
   paymentPages(app, ctx);
   // /health tambien en la raiz (comodo para curl y chequeos de disponibilidad)
-  app.get('/health', async () => ({ ok: true, version: cfg.version }));
+  app.get('/health', async () => ({ ok: true, version: cfg.version, lanUrls: lanUrls(cfg.port) }));
 
   // ---------- Estaticos: /uploads, /admin ----------
   fs.mkdirSync(cfg.uploadsDir, { recursive: true });

@@ -8,7 +8,7 @@ import { baseUrl, type Ctx } from '../services.js';
 import {
   categoryJson, listingJson, notificationJson, publicUser, reviewJson, techCard, techProfileJson, userJson,
 } from '../serialize.js';
-import { AppError, badRequest, conflict, newId, notFound, nowIso, parse } from '../util.js';
+import { AppError, badRequest, conflict, lanUrls, newId, notFound, nowIso, parse } from '../util.js';
 
 export function issueToken(app: FastifyInstance, user: { id: string; role: string }) {
   return app.jwt.sign({ sub: user.id, role: user.role }, { expiresIn: '30d' });
@@ -17,7 +17,7 @@ export function issueToken(app: FastifyInstance, user: { id: string; role: strin
 export default function coreRoutes(app: FastifyInstance, ctx: Ctx, g: Guards) {
   const { db } = ctx;
 
-  app.get('/health', async () => ({ ok: true, version: ctx.cfg.version }));
+  app.get('/health', async () => ({ ok: true, version: ctx.cfg.version, lanUrls: lanUrls(ctx.cfg.port) }));
 
   // ---------- Auth ----------
   const registerSchema = z.object({
