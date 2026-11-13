@@ -851,6 +851,7 @@ class _TechSetupScreenState extends ConsumerState<TechSetupScreen> {
             for (final c in list)
               FilterChip(
                 avatar: Icon(categoryIcon(c.icon), size: 18),
+                showCheckmark: false,
                 label: Text(c.name),
                 selected: _cats.contains(c.id),
                 onSelected: (v) {

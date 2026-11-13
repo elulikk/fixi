@@ -51,7 +51,7 @@ En respuestas al cliente viene enriquecida: `tech: TechCard`, `distanceKm`, `sco
 
 **TechCard** `{ userId, name, avatarUrl, ratingAvg, ratingCount, jobsDone, points, level, verified, distanceKm? }`
 
-**Listing** (servicio publicado por un técnico) `{ id, techId, categoryId, title, description, price, priceType: "fixed"|"from"|"hourly", durationMinutes, active, createdAt }` + `tech: TechCard`, `distanceKm`, `etaMinutes` (estimado: 10 + distanceKm × 3), `score`.
+**Listing** (servicio publicado por un técnico) `{ id, techId, categoryId, title, description, price, priceType: "fixed"|"from"|"hourly", durationMinutes, active, createdAt }` + `tech: TechCard`, `lat`, `lng` (ubicación del técnico, para el mapa; `null` si no la cargó), `distanceKm`, `etaMinutes` (estimado: 10 + distanceKm × 3), `score`.
 
 **Job** (trabajo contratado) `{ id, requestId?, offerId?, listingId?, clientId, techId, categoryId, title, address, lat, lng, price, commission, techNet, etaMinutes, status, paymentStatus, createdAt, paidAt?, startedAt?, completedAt? }`
 - `status`: `"pending_payment"` → `"paid"` → `"on_the_way"` → `"in_progress"` → `"done"` (el técnico marca terminado) → `"completed"` (el cliente confirma; se libera el pago) · además `"cancelled"`, `"disputed"`.

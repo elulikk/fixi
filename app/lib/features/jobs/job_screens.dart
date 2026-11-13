@@ -318,6 +318,14 @@ class _JobScreenState extends ConsumerState<JobScreen> {
     final res = ref.watch(jobProvider(widget.id));
     final me = ref.watch(authProvider).user;
     final cs = context.cs;
+    // Cuando llega una ubicación nueva del técnico, el mapa encuadra técnico + destino.
+    ref.listen<LatLng?>(liveLocationProvider(widget.id), (_, n) {
+      final jj = ref.read(jobProvider(widget.id)).valueOrNull;
+      if (n == null || jj == null) return;
+      try {
+        _map.fitCamera(CameraFit.coordinates(coordinates: [n, LatLng(jj.lat, jj.lng)], padding: const EdgeInsets.all(48), maxZoom: 16));
+      } catch (_) {}
+    });
     return Scaffold(
       appBar: AppBar(title: const Text('Seguimiento')),
       body: AsyncBody<Job>(
@@ -326,7 +334,7 @@ class _JobScreenState extends ConsumerState<JobScreen> {
         builder: (j) {
           final isClient = me?.id == j.clientId;
           final stage = _stage(j.status);
-          final live = ref.watch(liveLocationProvider(j.id));
+          final live = j.status == 'on_the_way' ? ref.watch(liveLocationProvider(j.id)) : null;
           final other = isClient ? (j.tech == null ? null : (j.tech!.name, j.tech!.avatarUrl)) : (j.client == null ? null : (j.client!.name, j.client!.avatarUrl));
           final hasPlace = j.lat != 0 || j.lng != 0;
           final dest = LatLng(j.lat, j.lng);
@@ -361,6 +369,7 @@ class _JobScreenState extends ConsumerState<JobScreen> {
                   height: 210,
                   child: FixiMap(
                     center: live ?? dest,
+                    fit: live != null ? [live, dest] : null,
                     zoom: 14.5,
                     controller: _map,
                     markers: [
@@ -581,7 +590,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   List<ChatMessage> _msgs = [];
   Object? _error;
   bool _loading = true, _sending = false;
-  late final ProviderContainer _container;
+  ProviderContainer? _container;
 
   @override
   void initState() {
@@ -592,14 +601,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _container = ProviderScope.containerOf(context);
-    Future.microtask(() => _container.read(activeChatProvider.notifier).state = widget.jobId);
+    final c = ProviderScope.containerOf(context);
+    _container = c;
+    Future.microtask(() => c.read(activeChatProvider.notifier).state = widget.jobId);
   }
 
   @override
   void dispose() {
     final c = _container;
-    Future.microtask(() => c.read(activeChatProvider.notifier).state = null);
+    if (c != null) Future.microtask(() => c.read(activeChatProvider.notifier).state = null);
     super.dispose();
   }
 

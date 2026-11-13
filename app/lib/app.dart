@@ -160,7 +160,10 @@ class FixiApp extends ConsumerWidget {
         break;
       case 'notification.new':
         ref.invalidate(notificationsProvider);
-        final t = '${asMap(d['notification'])['title'] ?? d['title'] ?? ''}';
+        final n = asMap(d['notification'] ?? d);
+        final t = '${n['title'] ?? ''}';
+        // Los mensajes de chat ya se avisan aparte (o se ven en la pantalla de chat abierta).
+        if (n['type'] == 'message.new') break;
         if (t.isNotEmpty) showSnack(null, t);
         break;
     }

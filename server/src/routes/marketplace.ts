@@ -279,7 +279,7 @@ export default function marketplaceRoutes(app: FastifyInstance, ctx: Ctx, g: Gua
     const items = base.map(({ l, d, tech }) => {
       const s = scores.get(l.id)!;
       return {
-        ...listingJson(l), tech, distanceKm: d === null ? null : round1(d), etaMinutes: d === null ? null : etaFromDistance(d),
+        ...listingJson(l), tech, lat: l.t_lat ?? null, lng: l.t_lng ?? null, distanceKm: d === null ? null : round1(d), etaMinutes: d === null ? null : etaFromDistance(d),
         score: s.score, badge: s.badge, badges: s.badges,
       };
     });

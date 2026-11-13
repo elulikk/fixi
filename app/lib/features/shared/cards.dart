@@ -9,13 +9,16 @@ import '../../core/util/format.dart';
 import '../../core/widgets/common.dart';
 
 class FixiMap extends StatelessWidget {
-  const FixiMap({super.key, required this.center, this.zoom = 13.5, this.markers = const [], this.controller, this.interactive = true, this.onTap});
+  const FixiMap({super.key, required this.center, this.zoom = 13.5, this.markers = const [], this.controller, this.interactive = true, this.onTap, this.fit});
   final LatLng center;
   final double zoom;
   final List<Marker> markers;
   final MapController? controller;
   final bool interactive;
   final VoidCallback? onTap;
+
+  /// Si trae 2+ puntos, el mapa arranca encuadrándolos a todos.
+  final List<LatLng>? fit;
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
@@ -23,6 +26,7 @@ class FixiMap extends StatelessWidget {
       options: MapOptions(
         initialCenter: center,
         initialZoom: zoom,
+        initialCameraFit: (fit != null && fit!.length >= 2) ? CameraFit.coordinates(coordinates: fit!, padding: const EdgeInsets.all(48), maxZoom: 16) : null,
         minZoom: 3,
         maxZoom: 18,
         interactionOptions: InteractionOptions(flags: interactive ? InteractiveFlag.all & ~InteractiveFlag.rotate : InteractiveFlag.none),

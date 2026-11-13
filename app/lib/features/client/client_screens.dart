@@ -335,7 +335,7 @@ class _ExploreTabState extends ConsumerState<ExploreTab> {
 
   LatLng _positionFor(Listing l, LatLng me) {
     if (l.lat != null && l.lng != null) return LatLng(l.lat!, l.lng!);
-    // Aproximación: el contrato no incluye coordenadas del técnico; usamos distancia + rumbo estable.
+    // Respaldo si el servidor no mandó lat/lng del técnico: distancia + rumbo estable.
     final bearing = (l.id.codeUnits.fold<int>(0, (a, b) => a * 31 + b) % 360) * math.pi / 180;
     final d = (l.distanceKm ?? 1) / 111.0;
     return LatLng(me.latitude + d * math.cos(bearing), me.longitude + d * math.sin(bearing) / math.cos(me.latitude * math.pi / 180));

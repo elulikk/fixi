@@ -96,11 +96,32 @@ class AuthState {
   const AuthState(this.status, {this.user, this.tech});
 }
 
+/// Al volver a la app (p. ej. desde el navegador tras vincular Mercado Pago) refresca el perfil.
+class _ResumeObserver with WidgetsBindingObserver {
+  _ResumeObserver(this.onResume);
+  final void Function() onResume;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) onResume();
+  }
+}
+
 class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this.ref) : super(const AuthState(AuthStatus.unknown)) {
     _init();
+    _obs = _ResumeObserver(() {
+      if (state.status == AuthStatus.authed) refresh();
+    });
+    WidgetsBinding.instance.addObserver(_obs);
   }
+  late final _ResumeObserver _obs;
   final Ref ref;
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(_obs);
+    super.dispose();
+  }
   SharedPreferences get _p => ref.read(prefsProvider);
 
   Future<void> _init() async {

@@ -11,3 +11,11 @@ tiempo y reputación, y el cliente elige la opción que más le conviene y paga 
 | `docs/`   | Arquitectura, diseño, plan comercial y legal |
 
 Empezá por [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
+
+## Arranque rápido
+
+1. Servidor (en la PC): `cd server && npm install && npm run dev` → queda en `http://localhost:4000` y muestra la dirección de red para el celular.
+2. Panel de administración: abrí `http://localhost:4000/admin/`.
+3. App: instalá el APK (`cd app && flutter build apk --release`, sale en `app/build/app/outputs/flutter-apk/app-release.apk`), tocá "Configurar servidor" y cargá la dirección de red de la PC.
+
+Las cuentas de demo están en [server/README.md](server/README.md). El plan comercial y los borradores legales están en [docs/comercial/](docs/comercial/README.md).

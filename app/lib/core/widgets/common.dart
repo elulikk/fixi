@@ -245,10 +245,12 @@ class StatusPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (label, color) = spec(status);
+    // En tema oscuro aclaramos el texto para que no se pierda contra el fondo.
+    final fg = context.isDark ? Color.lerp(color, Colors.white, .45)! : color;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(color: color.withOpacity(.14), borderRadius: BorderRadius.circular(99)),
-      child: Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: color)),
+      child: Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: fg)),
     );
   }
 }

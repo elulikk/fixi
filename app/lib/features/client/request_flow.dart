@@ -249,6 +249,8 @@ class _RequestFlowScreenState extends ConsumerState<RequestFlowScreen> {
           Expanded(
             child: AnimatedSwitcher(
               duration: 300.ms,
+              // Por defecto el Stack centra el contenido; lo queremos pegado arriba y a pantalla completa.
+              layoutBuilder: (cur, prev) => Stack(fit: StackFit.expand, alignment: Alignment.topCenter, children: [...prev, if (cur != null) cur]),
               transitionBuilder: (w, a) => FadeTransition(opacity: a, child: SlideTransition(position: Tween(begin: const Offset(.05, 0), end: Offset.zero).animate(a), child: w)),
               child: SingleChildScrollView(
                 key: ValueKey(_step),
